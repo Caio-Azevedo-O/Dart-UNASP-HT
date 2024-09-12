@@ -1,0 +1,234 @@
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, sort_child_properties_last, unused_import, avoid_web_libraries_in_flutter, library_private_types_in_public_api
+
+import 'package:flutter/material.dart';
+void main() {
+  runApp(AgendaEscolar());
+}
+class AgendaEscolar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Agenda',
+      theme: ThemeData(
+        
+        primaryColor: Color.fromARGB(255, 11, 7, 56),
+      ),
+      home: AgendaTarefas(),
+    );
+  }
+}
+class AgendaTarefas extends StatefulWidget{
+  @override
+  _AgendaTarefaState createState() => _AgendaTarefaState();
+}
+class _AgendaTarefaState extends State<AgendaTarefas> {
+   final TextEditingController _taskController = TextEditingController();
+  List<String> _tasks = [];
+  int? _editingTaskIndex;
+
+
+  // Função para adicionar ou editar tarefa
+  void _addOrEditTask() {
+    final task = _taskController.text;
+    if (task.isEmpty) return;
+
+
+    setState(() {
+      if (_editingTaskIndex == null) {
+        _tasks.add(task); // Adiciona nova tarefa
+      } else {
+        _tasks[_editingTaskIndex!] = task; // Edita a tarefa existente
+        _editingTaskIndex = null;
+      }
+    });
+    _taskController.clear();
+  }
+
+
+  // Função para editar tarefa existente
+  void _editTask(int index) {
+    setState(() {
+      _taskController.text = _tasks[index];
+      _editingTaskIndex = index;
+    });
+  }
+
+
+  // Função para deletar tarefa
+  void _deleteTask(int index) {
+    setState(() {
+      _tasks.removeAt(index);
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 11, 7, 56),
+        
+        title: Text(
+          'Agenda de Tarefas',
+          style: TextStyle(
+            color: Color.fromARGB(255, 199, 234, 255),
+            
+          ),
+        ),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 11, 7, 56),
+                ),
+              child: Text(
+                "Páginas da Agenda",
+                style: TextStyle(
+                  color: Color.fromARGB(255, 199, 234, 255),
+                  fontSize: 30,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.assignment),
+              title: Text("Agenda tarefas"),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AgendaTarefas()),
+                );
+              }
+            ),
+            ListTile(
+              leading: Icon(Icons.assignment),
+              title: Text("Agenda aulas"),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AgendaAulas()),
+                );
+              }
+            ),
+          ],
+        ),
+        backgroundColor: Color.fromARGB(255, 124, 196, 255),
+      ),
+      body: SizedBox.expand(
+        child: Column(
+          children: [
+            TextField(
+              controller: _taskController,
+              decoration: InputDecoration(
+                labelText: 'Digite a tarefa',
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: _addOrEditTask,
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            // Lista de tarefas
+            Expanded(
+              child: ListView.builder(
+                itemCount: _tasks.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(_tasks[index]),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () => _editTask(index),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () => _deleteTask(index),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      backgroundColor: Color.fromARGB(255, 124, 196, 255),
+
+
+
+
+    );
+  }
+}
+class AgendaAulas extends StatefulWidget{
+  @override
+  _AgendaAulasState createState() => _AgendaAulasState();
+}
+
+
+class _AgendaAulasState extends State<AgendaAulas> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 11, 7, 56),
+        title: Text(
+          'Agenda de aulas',
+          style: TextStyle(
+            color: Color.fromARGB(255, 199, 234, 255),
+          ),
+        ),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 11, 7, 56),
+                ),
+              child: Text(
+                "Páginas da Agenda",
+                style: TextStyle(
+                  color: Color.fromARGB(255, 199, 234, 255),
+                  fontSize: 30,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.assignment),
+              title: Text("Agenda tarefas"),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AgendaTarefas()),
+                );
+              }
+            ),
+            ListTile(
+              leading: Icon(Icons.assignment),
+              title: Text("Agenda aulas"),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AgendaAulas()),
+                );
+              }
+            ),
+          ],
+        ),
+        backgroundColor: Color.fromARGB(255, 124, 196, 255),
+      ),
+      body: SizedBox.expand(
+        child: Text(
+          'Olá, Mundo!',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+      backgroundColor: Color.fromARGB(255, 124, 196, 255),
+    );
+  }
+}
